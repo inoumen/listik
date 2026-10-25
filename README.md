@@ -24,6 +24,20 @@ Run `bin/ListikSetup.exe` to open the installer. It displays the installation fo
 - The tray menu provides language selection, show/hide all, autostart and quit.
 - Notes autosave after editing, approximately every 600 ms, and on normal exit.
 
+## Source layout
+
+- [Program](src/Program.cs): application entry point and single-instance guard.
+- [NoteData](src/NoteData.cs): persisted fields; names remain compatible with existing notes.
+- [NoteStore](src/NoteStore.cs): JSON loading and atomic saving.
+- [NotesApp](src/NotesApp.cs): note lifecycle, autosave and desktop visibility; [tray menu](src/NotesApp.Tray.cs) is kept separately.
+- [NoteWindow](src/NoteWindow.cs): editing, dragging, resizing and appearance; [note menu](src/NoteWindow.Menu.cs) contains menu construction.
+- [Language](src/Language.cs): translations and language preference.
+- [Native](src/Native.cs): Windows interop and atomic file replacement.
+- [Setup](src/Setup.cs): installer interface; [installation operations](src/Setup.Installation.cs) copy the executable and create the shortcut.
+- [DrawIcon](tools/DrawIcon.cs): original icon generation during the build.
+
+Build scripts discover application and installer sources separately. No extra packages or SDK are needed. The shared formatting conventions are in [.editorconfig](.editorconfig).
+
 Notes are stored in `%LOCALAPPDATA%/Listik/notes.json`; language preference is in the same directory. Writes use atomic file replacement. No archive, trash, backup, export, tags, search, reminders, themes or sync.
 
 ## Behaviour and current limits
